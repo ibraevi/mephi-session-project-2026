@@ -1,0 +1,6 @@
+UUID=6f8c00f2-c2dd-4f3f-a7f1-89ab816842a5 / btrfs compress=zstd:1,defaults,subvol=root 0 1
+UUID=6f8c00f2-c2dd-4f3f-a7f1-89ab816842a5 /boot btrfs compress=zstd:1,subvol=boot 0 0
+UUID=6f8c00f2-c2dd-4f3f-a7f1-89ab816842a5 /home btrfs compress=zstd:1,subvol=home 0 0
+UUID=6f8c00f2-c2dd-4f3f-a7f1-89ab816842a5 /var btrfs compress=zstd:1,subvol=var 0 0
+UUID=A29B-8975 /boot/efi vfat defaults,umask=0077,shortname=winnt 0 0
+LABEL=MEPHI_WEB /mephi-web ext4 defaults 0 2

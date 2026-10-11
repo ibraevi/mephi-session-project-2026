@@ -1,0 +1,199 @@
+history
+rm ~/.bash_history 
+clear
+ls
+history
+clear
+hostnamectl --help
+hostnamectl hostname --help
+sudo hostnamectl hostname mephi-2026.domain.local
+uname
+uname -a
+printf '%s\n' 'preserve_hostname: true' | sudo tee /etc/cloud/cloud.cfg.d/99-mephi-hostname.cfg
+hostnamectl status
+printf '%s\n' 'preserve_hostname: true' | sudo tee /etc/cloud/cloud.cfg.d/99-mephi-hostname.cfg
+hostnamectl status
+ip a
+ip route
+mkdir -p ~/share
+ping -c4 8.8.8.8 > ~/share/ping.out
+cat ~/share/ping.out
+dnf --help
+sudo dnf upgrade
+sudo install nginx libcap-ng-utils
+sudo dnf install nginx libcap-ng-utils
+mktemp -d
+dnf download --help
+sudo dnf download --destdir /tmp/tmp.8Z9HKaYVbC tcpdump 
+ls -lh /tmp/tmp.8Z9HKaYVbC/
+sudo rpm -i /tmp/tmp.8Z9HKaYVbC/tcpdump-4.99.6-3.fc44.aarch64.rpm
+dnf provides '*/libpcap.so.1'
+sudo dnf install libpcap
+sudo rpm -i /tmp/tmp.8Z9HKaYVbC/tcpdump-4.99.6-3.fc44.aarch64.rpm
+rpm -q libpcap tcpdump
+dnf history list > ~/share/dnf.out
+cat ~/share/dnf.out
+sudo reboot
+sudo login -f curator1
+sudo login -f curator2
+sudo login -f user1
+sudo dnf install pamtester
+sudo pamtester -v login curator1 acct_mgmt
+sudo pamtester -v login curator2 acct_mgmt
+sudo pamtester -v login user1 acct_mgmt
+grep PASS_MAX_DAYS /etc/login.defs
+sudo chage -l user1
+sudo nano /etc/login.defs
+sudo chage -M 90 user1
+sudo chage -M 90 user2
+sudo chage -M 90 user3
+sudo chage -M 90 curator1
+sudo chage -M 90 curator2
+sudo chage -l user1
+grep pam_pwquality /etc/pam.d/system-auth /etc/pam.d/password-auth
+cat /etc/security/pwquality.conf
+ls /etc/security/pwquality.conf.d/
+clear
+ls /etc/security/pwquality.conf.d/
+cat /etc/security/pwquality.conf
+uname -r
+hostnamectl --static
+systemctl --failed --no-pager
+lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS
+sudo fdisk /dev/vdb
+sudo mkfs.ext4 -L MEPHI_WEB /dev/vdb1
+lsblk -f /dev/vdb
+sudo mkdir -p /mephi-web
+sudo mount -L MEPHI_WEB /mephi-web
+findmnt /mephi-web
+sudo systemctl daemon-reload
+sudo findmnt --verify --verbose
+cat /etc/fstab
+printf '%s\n' 'LABEL=MEPHI_WEB /mephi-web ext4 defaults 0 2' | sudo tee -a /etc/fstab
+sudo systemctl daemon-reload
+sudo findmnt --verify --verbose
+sudo umount /mephi-web
+sudo mount /mephi-web
+findmnt /mephi-web
+sudo systemctl start nginx
+sudo systemctl enable nginx
+systemctl status nginx --no-pager
+sudo journalctl -u nginx -b --no-pager > ~/share/journalctl.out
+cat ~/share/journalctl.out
+getent group developers curators
+sudo groupadd developers
+sudo groupadd -g 4444 curators
+getent group developers curators
+sudo useradd -u 5501 -g developers -m -s /bin/bash user1
+sudo useradd -u 5502 -g developers -m -s /bin/bash user2
+sudo useradd -u 5503 -g developers -m -s /bin/bash user3
+id user1 user2 user3
+id curator1 curator2
+sudo useradd -g curators -m -s /bin/bash curator1
+sudo useradd -g curators -m -s /bin/bash curator2
+id curator1 curator2
+sudo mkdir -p /data/mephi-2026
+sudo chown root:developers /data/mephi-2026
+ls -ld /data /data/mephi-2026
+sudo chmod 770 /data/mephi-2026
+ls -ld /data/mephi-2026
+sudo dnf install acl
+sudo getfacl /data/mephi-2026
+sudo setfacl -m g:curators:rx /data/mephi-2026
+sudo getfacl -p /data/mephi-2026
+sudo chmod g+s /data/mephi-2026
+sudo setfacl -d -m u::rwx,g::rwx,g:curators:rx,m::rwx,o::--- /data/mephi-2026
+sudo getfacl -p /data/mephi-2026
+sudo -u user1 sh -c 'echo user1 > /data/mephi-2026/acl-test.txt'
+sudo -u user2 sh -c 'echo user2 >> /data/mephi-2026/acl-test.txt'
+sudo -u curator1 cat /data/mephi-2026/acl-test.txt
+sudo -u curator1 sh -c 'echo curator1 >> /data/mephi-2026/acl-test.txt'
+sudo getfacl -p /data/mephi-2026/acl-test.txt
+sudo -u user3 mkdir /data/mephi-2026/acl-test-dir
+sudo -u user3 sh -c 'echo user3 > /data/mephi-2026/acl-test-dir/test.txt'
+sudo -u user1 sh -c 'echo user1 >> /data/mephi-2026/acl-test-dir/test.txt'
+sudo -u curator2 cat /data/mephi-2026/acl-test-dir/test.txt
+sudo -u curator2 touch /data/mephi-2026/acl-test-dir/curator-file.txt
+cat /data/mephi-2026/acl-test-dir/test.txt
+sudo stat /data/mephi-2026 /mephi-web > ~/share/stat.out
+rpm -ql tcpdump
+ls -l /usr/bin/tcpdump
+getcap /usr/bin/tcpdump
+clear
+sudo setcap cap_net_raw=ep /usr/bin/tcpdump
+getcap /usr/bin/tcpdump
+getcap /usr/bin/tcpdump > ~/share/getcap.out
+sudo -u user1 tcpdump -i lo -p -nn -c 2 icmp
+getenforce
+ls -Zd /mephi-web /usr/share/nginx/html
+sudo dnf install policycoreutils-python-utils
+sudo semanage fcontext -a -t httpd_sys_content_t '/mephi-web(/.*)?'
+sudo restorecon -Rv /mephi-web
+ls -Zd /mephi-web
+echo 'stud 372593' | sudo tee /mephi-web/index.html
+sudo chmod 644 /mephi-web/index.html
+sudo restorecon -v /mephi-web/index.html
+cat /etc/nginx/nginx.conf
+nano /etc/nginx/nginx.conf
+sudo nano /etc/nginx/nginx.conf
+echo 'Hello from Student: 372593' | sudo tee /mephi-web/index.html
+cat  /mephi-web/index.html
+sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+sudoedit /etc/nginx/nginx.conf
+sudo nginx -t
+sudo systemctl reload nginx
+curl http://localhost/
+clear
+curl -I http://localhost/
+curl -fsS http://localhost/
+curl -fsS http://localhost/ > ~/share/curl.out
+getenforce > ~/share/getenforce.out
+cat ~/share/curl.out 
+cat ~/share/getenforce.out 
+cat /etc/pam.d/login
+sudo authselect current
+sudo cp -a /etc/pam.d/login /etc/pam.d/login.bak
+sudo nano /etc/security/mephi-console-access.conf
+sudo nano /etc/pam.d/login
+cat /etc/security/mephi-console-access.conf
+cat /etc/pam.d/login
+sudo nano /etc/security/pwquality.conf
+grep pam_pwquality /etc/pam.d/system-auth /etc/pam.d/password-auth
+sudo passwd user1
+sudo passwd user2
+sudo passwd user3
+sudo passwd curator1
+sudo passwd curator2
+sudo pamtester -v login user1 authenticate acct_mgmt
+sudo pamtester -v login curator1 authenticate acct_mgmt
+sudo pamtester -v login user1 authenticate acct_mgmt
+sudo pamtester -v login curator1 authenticate acct_mgmt
+sudo reboot
+hostnamectl --static
+findmnt /mephi-web
+systemctl is-enabled nginx
+systemctl is-active nginx
+getenforce
+curl -fsS http://localhost/
+systemctl --failed --no-pager
+sudo getfacl -p /data/mephi-2026
+getcap /usr/bin/tcpdump
+sudo passwd -S user1
+sudo passwd -S user2
+sudo passwd -S user3
+sudo passwd -S curator1
+sudo passwd -S curator2
+ping -c 4 8.8.8.8 > ~/share/ping.out
+dnf history list > ~/share/dnf.out
+sudo stat /data/mephi-2026 /mephi-web > ~/share/stat.out
+sudo journalctl -u nginx -b --no-pager > ~/share/journalctl.out
+getcap /usr/bin/tcpdump > ~/share/getcap.out
+getenforce > ~/share/getenforce.out
+curl -fsS http://localhost/ > ~/share/curl.out
+sudo getfacl -p /data/mephi-2026 > ~/share/acl.out
+cp /etc/fstab /etc/passwd /etc/group /etc/security/pwquality.conf ~/share/
+ls -lh ~/share/
+clear
+clear
+curl http://localhost/
+history -a
